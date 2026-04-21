@@ -1,1 +1,0 @@
-const express=require('express');const app=express();app.use(express.json());app.use(express.static('public'));app.post('/api/tutor',(req,res)=>res.json({reply:'AI Reply: '+(req.body.message||'')}));module.exports=app;if(require.main===module){app.listen(process.env.PORT||3000)}

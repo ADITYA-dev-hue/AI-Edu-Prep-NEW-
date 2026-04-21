@@ -1,1 +1,0 @@
-function login(){localStorage.setItem('currentUser',JSON.stringify({email:e.value,key:k.value}));location='home.html'}
