@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPrep Signup</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-container">
+
+<form class="auth-form" onsubmit="signup(event)">
+
+<h1>Create Account</h1>
+
+<input type="email" id="email" placeholder="Email Address" required>
+<input type="password" id="password" placeholder="Password" required>
+<input type="password" id="apikey" placeholder="Gemini API Key" required>
+
+<button type="submit">Create Account</button>
+
+<p>Already joined? <a href="login.html">Login</a></p>
+
+</form>
+
+</div>
+
+<script src="js/auth.js"></script>
+
+</body>
+</html>
