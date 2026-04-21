@@ -1,0 +1,24 @@
+{
+  "name": "eduprep-v3",
+  "version": "1.0.0",
+  "description": "EduPrep V3 - AI Powered Educational Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "education",
+    "ai",
+    "gemini",
+    "nodejs",
+    "vercel"
+  ],
+  "author": "Shiv",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}

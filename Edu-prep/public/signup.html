@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduPrep Signup</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="auth-container">
+
+  <div class="auth-left">
+    <h1>EduPrep <span>V3</span></h1>
+    <h2>Build skills.<br>Own your future.</h2>
+
+    <p>
+      Join EduPrep and unlock your AI tutor,
+      guided study paths, and smart progress tracking.
+    </p>
+
+    <div class="feature-box">
+      <div>150+ Practice Questions</div>
+      <div>3 Learning Tracks</div>
+      <div>Prompt Coach</div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+
+    <form action="/signup" method="POST" class="auth-form">
+
+      <h2>Create Account</h2>
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Email Address"
+        required
+      />
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
+
+      <input
+        type="password"
+        name="apikey"
+        placeholder="Enter Gemini API Key"
+        required
+      />
+
+      <button type="submit">Create Account</button>
+
+      <p class="switch-text">
+        Already have account?
+        <a href="login.html">Login</a>
+      </p>
+
+    </form>
+
+  </div>
+
+</div>
+
+</body>
+</html>
