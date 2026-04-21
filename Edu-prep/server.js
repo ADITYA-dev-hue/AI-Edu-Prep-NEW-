@@ -7,34 +7,54 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* ---------------- Middleware ---------------- */
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "eduprep_secret_key",
+    secret: process.env.SESSION_SECRET || "eduprep_secret_key",
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24
+    }
   })
 );
 
-/* Serve Frontend Files */
+/* ---------------- Static Files ---------------- */
+
 app.use(express.static(path.join(__dirname, "public")));
+
+/* ---------------- Helper ---------------- */
+
+function isLoggedIn(req) {
+  return req.session && req.session.user;
+}
 
 /* ---------------- Routes ---------------- */
 
-/* Default Route */
+/* Root */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+
+/* Login Page Shortcut */
+app.get("/login", (req, res) => {
+  res.redirect("/");
 });
 
 /* Signup */
 app.post("/signup", (req, res) => {
   const { email, password, apikey } = req.body;
 
+  if (!email || !password || !apikey) {
+    return res.send("All fields required.");
+  }
+
   req.session.user = {
     email,
-    password,
     apikey
   };
 
@@ -45,9 +65,12 @@ app.post("/signup", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password, apikey } = req.body;
 
+  if (!email || !password || !apikey) {
+    return res.send("All fields required.");
+  }
+
   req.session.user = {
     email,
-    password,
     apikey
   };
 
@@ -61,70 +84,104 @@ app.get("/logout", (req, res) => {
   });
 });
 
-/* Check User */
+/* Current User */
 app.get("/api/user", (req, res) => {
-  if (req.session.user) {
-    res.json({
+  if (isLoggedIn(req)) {
+    return res.json({
       loggedIn: true,
-      user: req.session.user.email
-    });
-  } else {
-    res.json({
-      loggedIn: false
+      email: req.session.user.email
     });
   }
+
+  res.json({
+    loggedIn: false
+  });
 });
 
-/* AI Tutor API */
+/* ---------------- Tutor API ---------------- */
+
 app.post("/api/tutor", async (req, res) => {
   const { message } = req.body;
 
-  if (!req.session.user) {
+  if (!isLoggedIn(req)) {
     return res.json({
       reply: "Please login first."
     });
   }
 
+  if (!message || message.trim() === "") {
+    return res.json({
+      reply: "Enter a valid question."
+    });
+  }
+
   const blockedWords = [
-    "joke",
     "dating",
+    "adult",
     "movie",
     "song",
-    "adult"
+    "joke",
+    "relationship"
   ];
 
-  const lowerMsg = message.toLowerCase();
+  const msg = message.toLowerCase();
 
   const blocked = blockedWords.some(word =>
-    lowerMsg.includes(word)
+    msg.includes(word)
   );
 
   if (blocked) {
     return res.json({
       reply:
-        "EduPrep Tutor is for academic learning only."
+        "EduPrep Tutor supports academic learning only."
+    });
+  }
+
+  /* Gemini Ready Placeholder */
+  return res.json({
+    reply:
+      "AI Tutor Answer for: " +
+      message +
+      " (Gemini API can be connected here)"
+  });
+});
+
+/* ---------------- Analytics ---------------- */
+
+app.get("/api/analytics", (req, res) => {
+  if (!isLoggedIn(req)) {
+    return res.json({
+      studyMinutes: 0,
+      promptScore: 0,
+      accuracy: 0,
+      topicsCompleted: 0
     });
   }
 
   res.json({
-    reply:
-      "AI Tutor Response: " +
-      message +
-      " (Gemini API integration ready)"
+    studyMinutes: 142,
+    promptScore: 89,
+    accuracy: 93,
+    topicsCompleted: 21
   });
 });
 
-/* Analytics API */
-app.get("/api/analytics", (req, res) => {
-  res.json({
-    studyMinutes: 124,
-    promptScore: 88,
-    accuracy: 91,
-    topicsCompleted: 17
-  });
+/* ---------------- 404 ---------------- */
+
+app.use((req, res) => {
+  res.status(404).send("Page Not Found");
 });
 
-/* ---------------- Start Server ---------------- */
-app.listen(PORT, () => {
-  console.log(`EduPrep running on http://localhost:${PORT}`);
-});
+/* ---------------- Export for Vercel ---------------- */
+
+module.exports = app;
+
+/* ---------------- Local Run ---------------- */
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(
+      `EduPrep running on http://localhost:${PORT}`
+    );
+  });
+}
