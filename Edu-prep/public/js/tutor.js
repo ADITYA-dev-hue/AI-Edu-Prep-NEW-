@@ -1,1 +1,0 @@
-async function send(){let r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m.value})});let d=await r.json();o.textContent=d.reply;}
