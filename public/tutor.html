@@ -9,6 +9,7 @@
 <body>
 
 <nav class="navbar">
+
 <div class="logo">EduPrep</div>
 
 <ul>
@@ -18,46 +19,110 @@
 <li><a href="analytics.html">ANALYTICS</a></li>
 <li><a href="#" onclick="logout()" class="logout-btn">LOGOUT</a></li>
 </ul>
+
 </nav>
 
-<div class="tutor-layout">
-
-<div class="chat-panel">
+<section class="page-wrap">
 
 <h1>AI Tutor</h1>
 
-<div id="chatBox" class="chat-box"></div>
+<p style="color:#a6a6a6;margin-bottom:26px;max-width:760px;line-height:1.7;">
+Ask questions related to coding, exams, study plans, interview prep,
+Python, DSA, web development and career growth.
+</p>
+
+<div class="tutor-layout">
+
+<!-- CHAT PANEL -->
+
+<div class="card chat-panel">
+
+<div id="chatBox" class="chat-box">
+
+<div style="margin-bottom:14px;">
+<span style="
+background:#1c1c1c;
+padding:12px 14px;
+border-radius:12px;
+display:inline-block;
+max-width:75%;
+color:#f0f0f0;
+border:1px solid #2a2a2a;
+">
+Hello! I am EduPrep AI Tutor. Ask me any academic question.
+</span>
+</div>
+
+</div>
 
 <div class="chat-input-area">
-<input type="text" id="userInput" placeholder="Ask study question...">
-<button onclick="sendMessage()">Send</button>
+
+<input
+type="text"
+id="userInput"
+placeholder="Ask something..."
+onkeydown="if(event.key==='Enter'){sendMessage()}"
+>
+
+<button onclick="sendMessage()">
+Send
+</button>
+
 </div>
 
 </div>
+
+<!-- SIDE PANEL -->
 
 <div class="side-panel">
 
-<div class="mini-card">
-<h3>Prompt Coach</h3>
+<div class="card mini-card">
+
+<h2>Prompt Analysis</h2>
+
 <p id="clarity">Clarity: 0%</p>
 <p id="depth">Depth: 0%</p>
 <p id="specificity">Specificity: 0%</p>
-</div>
-
-<div class="mini-card">
-<h3>Quick Prompts</h3>
-<p>Explain recursion</p>
-<p>DSA roadmap</p>
-<p>JavaScript basics</p>
-<p>Node.js intro</p>
-</div>
 
 </div>
 
+<div class="card mini-card">
+
+<h2>Quick Questions</h2>
+
+<p class="topic-btn" onclick="fillPrompt('Explain Python loops')">
+Explain Python loops
+</p>
+
+<p class="topic-btn" onclick="fillPrompt('DSA roadmap for beginners')">
+DSA roadmap
+</p>
+
+<p class="topic-btn" onclick="fillPrompt('How to prepare for interviews')">
+Interview prep
+</p>
+
+<p class="topic-btn" onclick="fillPrompt('Explain JavaScript promises')">
+JS Promises
+</p>
+
 </div>
+
+</div>
+
+</div>
+
+</section>
 
 <script src="js/auth.js"></script>
 <script src="js/tutor.js"></script>
+
+<script>
+function fillPrompt(text){
+document.getElementById("userInput").value = text;
+document.getElementById("userInput").focus();
+}
+</script>
 
 </body>
 </html>
