@@ -32,7 +32,7 @@ ${message}
 input.value = "";
 chatBox.scrollTop = chatBox.scrollHeight;
 
-/* Prompt Score */
+/* Prompt Analysis */
 
 document.getElementById("clarity").innerText =
 "Clarity: " + Math.floor(Math.random()*18+82) + "%";
@@ -43,44 +43,31 @@ document.getElementById("depth").innerText =
 document.getElementById("specificity").innerText =
 "Specificity: " + Math.floor(Math.random()*18+84) + "%";
 
-/* User Data */
+/* User */
 
 const user = JSON.parse(
-localStorage.getItem(
-"eduprepCurrentUser"
-)
+localStorage.getItem("eduprepCurrentUser")
 );
 
 if(!user){
-chatBox.innerHTML += botMsg(
-"Please login first."
-);
+chatBox.innerHTML += botMsg("Please login first.");
 return;
 }
 
-const apiKey =
-(user.apikey || "").trim();
+const apiKey = (user.apikey || "").trim();
 
 if(apiKey === ""){
-chatBox.innerHTML += botMsg(
-"API Key missing. Login again."
-);
+chatBox.innerHTML += botMsg("API Key missing. Login again.");
 return;
 }
 
-/* Restriction */
+/* Restricted */
 
 const blocked = [
-"movie",
-"song",
-"dating",
-"adult",
-"joke",
-"relationship"
+"movie","song","dating","adult","joke","relationship"
 ];
 
-if(
-blocked.some(word =>
+if(blocked.some(word =>
 message.toLowerCase().includes(word)
 )){
 chatBox.innerHTML += botMsg(
@@ -97,15 +84,12 @@ ${botMsg("Thinking...")}
 </div>
 `;
 
-chatBox.scrollTop =
-chatBox.scrollHeight;
-
-/* Gemini Request */
+chatBox.scrollTop = chatBox.scrollHeight;
 
 try{
 
 const response = await fetch(
-`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
 {
 method:"POST",
 headers:{
@@ -117,7 +101,7 @@ contents:[
 parts:[
 {
 text:
-"You are EduPrep AI Tutor. Answer only academic, coding, career, exam and study related questions.\n\nUser Question: " + message
+"You are EduPrep AI Tutor. Answer only academic, coding, exams, learning and career questions.\n\nUser Question: " + message
 }
 ]
 }
@@ -126,15 +110,10 @@ text:
 }
 );
 
-const data =
-await response.json();
-
-/* Remove loading */
+const data = await response.json();
 
 const loading =
-document.getElementById(
-"loadingBox"
-);
+document.getElementById("loadingBox");
 
 if(loading) loading.remove();
 
@@ -149,18 +128,15 @@ data.candidates[0].content.parts &&
 data.candidates[0].content.parts[0]
 ){
 reply =
-data.candidates[0]
-.content.parts[0].text;
+data.candidates[0].content.parts[0].text;
 }
 
 if(data.error){
 reply =
-"API Error: " +
-data.error.message;
+"API Error: " + data.error.message;
 }
 
-chatBox.innerHTML +=
-botMsg(reply);
+chatBox.innerHTML += botMsg(reply);
 
 chatBox.scrollTop =
 chatBox.scrollHeight;
@@ -168,9 +144,7 @@ chatBox.scrollHeight;
 }catch(error){
 
 const loading =
-document.getElementById(
-"loadingBox"
-);
+document.getElementById("loadingBox");
 
 if(loading) loading.remove();
 
@@ -181,8 +155,6 @@ chatBox.innerHTML += botMsg(
 }
 
 }
-
-/* Bot Bubble */
 
 function botMsg(text){
 
