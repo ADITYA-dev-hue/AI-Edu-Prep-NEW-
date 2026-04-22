@@ -30,13 +30,9 @@ ${message}
 `;
 
 input.value = "";
+chatBox.scrollTop = chatBox.scrollHeight;
 
-/* SCROLL */
-
-chatBox.scrollTop =
-chatBox.scrollHeight;
-
-/* PROMPT ANALYSIS */
+/* Prompt Score */
 
 document.getElementById("clarity").innerText =
 "Clarity: " + Math.floor(Math.random()*18+82) + "%";
@@ -47,7 +43,7 @@ document.getElementById("depth").innerText =
 document.getElementById("specificity").innerText =
 "Specificity: " + Math.floor(Math.random()*18+84) + "%";
 
-/* GET USER */
+/* User Data */
 
 const user = JSON.parse(
 localStorage.getItem(
@@ -55,32 +51,24 @@ localStorage.getItem(
 )
 );
 
-/* CHECK LOGIN */
-
 if(!user){
-
 chatBox.innerHTML += botMsg(
 "Please login first."
 );
-
 return;
 }
-
-/* CHECK API KEY */
 
 const apiKey =
 (user.apikey || "").trim();
 
 if(apiKey === ""){
-
 chatBox.innerHTML += botMsg(
 "API Key missing. Login again."
 );
-
 return;
 }
 
-/* BLOCK NON ACADEMIC */
+/* Restriction */
 
 const blocked = [
 "movie",
@@ -91,25 +79,20 @@ const blocked = [
 "relationship"
 ];
 
-const lower =
-message.toLowerCase();
-
 if(
 blocked.some(word =>
-lower.includes(word)
+message.toLowerCase().includes(word)
 )){
-
 chatBox.innerHTML += botMsg(
-"EduPrep Tutor supports academic questions only."
+"EduPrep Tutor supports academic learning only."
 );
-
 return;
 }
 
-/* LOADING */
+/* Loading */
 
 chatBox.innerHTML += `
-<div id="loadingMsg">
+<div id="loadingBox">
 ${botMsg("Thinking...")}
 </div>
 `;
@@ -117,12 +100,12 @@ ${botMsg("Thinking...")}
 chatBox.scrollTop =
 chatBox.scrollHeight;
 
-/* GEMINI REQUEST */
+/* Gemini Request */
 
 try{
 
 const response = await fetch(
-`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
 {
 method:"POST",
 headers:{
@@ -134,7 +117,7 @@ contents:[
 parts:[
 {
 text:
-"You are EduPrep AI Tutor. Only answer study, coding, career, exam and learning questions.\n\nUser Question: " + message
+"You are EduPrep AI Tutor. Answer only academic, coding, career, exam and study related questions.\n\nUser Question: " + message
 }
 ]
 }
@@ -146,19 +129,17 @@ text:
 const data =
 await response.json();
 
-/* REMOVE LOADING */
+/* Remove loading */
 
 const loading =
 document.getElementById(
-"loadingMsg"
+"loadingBox"
 );
 
 if(loading) loading.remove();
 
 let reply =
 "Unable to generate response.";
-
-/* SUCCESS */
 
 if(
 data.candidates &&
@@ -169,11 +150,8 @@ data.candidates[0].content.parts[0]
 ){
 reply =
 data.candidates[0]
-.content.parts[0]
-.text;
+.content.parts[0].text;
 }
-
-/* API ERROR */
 
 if(data.error){
 reply =
@@ -181,26 +159,22 @@ reply =
 data.error.message;
 }
 
-/* SHOW RESPONSE */
-
 chatBox.innerHTML +=
 botMsg(reply);
 
 chatBox.scrollTop =
 chatBox.scrollHeight;
 
-}
-catch(error){
+}catch(error){
 
 const loading =
 document.getElementById(
-"loadingMsg"
+"loadingBox"
 );
 
 if(loading) loading.remove();
 
-chatBox.innerHTML +=
-botMsg(
+chatBox.innerHTML += botMsg(
 "Connection error. Check internet or API key."
 );
 
@@ -208,7 +182,7 @@ botMsg(
 
 }
 
-/* BOT MESSAGE TEMPLATE */
+/* Bot Bubble */
 
 function botMsg(text){
 
@@ -221,8 +195,8 @@ border-radius:12px;
 display:inline-block;
 max-width:75%;
 white-space:pre-wrap;
-color:#f0f0f0;
 line-height:1.6;
+color:#f0f0f0;
 border:1px solid #2a2a2a;
 ">
 ${text}
