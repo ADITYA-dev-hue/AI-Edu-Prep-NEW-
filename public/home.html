@@ -8,58 +8,100 @@
 </head>
 <body>
 
-<nav class="navbar">
-<div class="logo">EduPrep</div>
+<!-- MENU -->
+<div class="menu-btn" onclick="toggleSidebar()">☰</div>
 
-<ul>
-<li><a href="home.html" class="nav-active">HOME</a></li>
-<li><a href="tutor.html">TUTOR</a></li>
-<li><a href="studypath.html">STUDY PATH</a></li>
-<li><a href="analytics.html">ANALYTICS</a></li>
-<li><a href="#" onclick="logout()" class="logout-btn">LOGOUT</a></li>
-</ul>
-</nav>
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
 
-<section class="hero">
+<h2>EduPrep</h2>
 
-<h1>Study <span>sharper.</span><br>Think in systems.</h1>
+<a href="home.html" class="active-link">Home</a>
+<a href="tutor.html">Tutor</a>
+<a href="studypath.html">Study Path</a>
+<a href="analytics.html">Analytics</a>
 
-<p>
-AI-powered academic OS for students, coders and future builders.
+<hr>
+
+<p class="side-label">Gemini API Key</p>
+
+<input
+type="password"
+id="apiKeyInput"
+placeholder="Enter API Key"
+class="side-input"
+>
+
+<button onclick="saveApiKey()" class="side-save">
+Save Key
+</button>
+
+<button onclick="logout()" class="logout-side">
+Logout
+</button>
+
+</div>
+
+<!-- CONTENT -->
+<section class="page-wrap">
+
+<h1>Welcome to EduPrep</h1>
+
+<p class="sub-text">
+Your AI-powered learning dashboard for coding, exams,
+roadmaps, analytics and smart study preparation.
 </p>
 
-<div class="hero-buttons">
-<a href="tutor.html" class="btn">Launch Tutor</a>
-<a href="studypath.html" class="btn-outline">Explore Path</a>
-</div>
-
-</section>
-
-<section class="stats-grid">
+<div class="stats-grid">
 
 <div class="card">
-<h2>3</h2>
-<p>Learning Tracks</p>
+<h2>AI Tutor</h2>
+<p>
+Ask academic, coding and interview questions instantly.
+</p>
 </div>
 
 <div class="card">
-<h2>60+</h2>
-<p>Topics Covered</p>
+<h2>Study Path</h2>
+<p>
+Follow Python, DSA and Full Stack guided learning roadmaps.
+</p>
 </div>
 
 <div class="card">
-<h2>150+</h2>
-<p>Practice Questions</p>
+<h2>Analytics</h2>
+<p>
+Track study time, prompt quality and learning progress.
+</p>
 </div>
 
 <div class="card">
-<h2>24/7</h2>
-<p>AI Tutor</p>
+<h2>Bring Your Own Key</h2>
+<p>
+Save your Gemini API key once from the sidebar.
+</p>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Quick Start</h2>
+
+<p style="line-height:1.8;color:#d0d0d0;">
+1. Open sidebar ☰ <br>
+2. Enter Gemini API Key <br>
+3. Open Tutor page <br>
+4. Ask study questions <br>
+5. Track progress in Analytics
+</p>
+
 </div>
 
 </section>
 
 <script src="js/auth.js"></script>
+<script src="js/tutor.js"></script>
 
 </body>
 </html>

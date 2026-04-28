@@ -8,61 +8,97 @@
 </head>
 <body>
 
-<nav class="navbar">
+<!-- MENU BUTTON -->
+<div class="menu-btn" onclick="toggleSidebar()">☰</div>
 
-<div class="logo">EduPrep</div>
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
 
-<ul>
-<li><a href="home.html">HOME</a></li>
-<li><a href="tutor.html" class="nav-active">TUTOR</a></li>
-<li><a href="studypath.html">STUDY PATH</a></li>
-<li><a href="analytics.html">ANALYTICS</a></li>
-<li><a href="#" onclick="logout()" class="logout-btn">LOGOUT</a></li>
-</ul>
+<h2>EduPrep</h2>
 
-</nav>
+<a href="home.html">Home</a>
+<a href="tutor.html" class="active-link">Tutor</a>
+<a href="studypath.html">Study Path</a>
+<a href="analytics.html">Analytics</a>
 
+<hr>
+
+<p class="side-label">Gemini API Key</p>
+
+<input
+type="password"
+id="apiKeyInput"
+placeholder="Enter API Key"
+class="side-input"
+>
+
+<button onclick="saveApiKey()" class="side-save">
+Save Key
+</button>
+
+<button onclick="logout()" class="logout-side">
+Logout
+</button>
+
+</div>
+
+<!-- PAGE -->
 <section class="page-wrap">
 
 <h1>AI Tutor</h1>
 
-<p style="color:#a6a6a6;margin-bottom:26px;max-width:760px;line-height:1.7;">
-Ask questions related to coding, exams, study plans, interview prep,
-Python, DSA, web development and career growth.
+<p class="sub-text">
+Ask coding, exams, formulas, study plans, interview or academic questions.
 </p>
 
-<div class="tutor-layout">
+<!-- GUIDE -->
 
-<!-- CHAT PANEL -->
+<div class="card guide-box">
+
+<h2>How to Generate API Key</h2>
+
+<p>
+1. Visit Google AI Studio<br>
+2. Login with Google Account<br>
+3. Click Create API Key<br>
+4. Copy key and paste in sidebar
+</p>
+
+</div>
+
+<!-- LANGUAGE -->
+
+<div class="lang-switch">
+
+<button onclick="setLang('english')" id="engBtn">
+English
+</button>
+
+<button onclick="setLang('hindi')" id="hinBtn">
+Hindi
+</button>
+
+</div>
+
+<!-- CHAT -->
 
 <div class="card chat-panel">
 
 <div id="chatBox" class="chat-box">
 
-<div style="margin-bottom:14px;">
-<span style="
-background:#1c1c1c;
-padding:12px 14px;
-border-radius:12px;
-display:inline-block;
-max-width:75%;
-color:#f0f0f0;
-border:1px solid #2a2a2a;
-">
-Hello! I am EduPrep AI Tutor. Ask me any academic question.
-</span>
+<div class="bot-msg">
+Hello! I am EduPrep Tutor.
 </div>
 
 </div>
 
-<div class="chat-input-area">
+<div class="chat-input-wrap">
 
-<input
-type="text"
+<textarea
 id="userInput"
-placeholder="Ask something..."
-onkeydown="if(event.key==='Enter'){sendMessage()}"
->
+placeholder="Ask your question..."
+rows="2"
+></textarea>
 
 <button onclick="sendMessage()">
 Send
@@ -72,42 +108,20 @@ Send
 
 </div>
 
-<!-- SIDE PANEL -->
+<!-- ANALYSIS -->
 
-<div class="side-panel">
+<div class="stats-grid">
 
-<div class="card mini-card">
-
-<h2>Prompt Analysis</h2>
-
-<p id="clarity">Clarity: 0%</p>
-<p id="depth">Depth: 0%</p>
-<p id="specificity">Specificity: 0%</p>
-
+<div class="card small-card">
+<h3 id="clarity">Clarity: 0%</h3>
 </div>
 
-<div class="card mini-card">
-
-<h2>Quick Questions</h2>
-
-<p class="topic-btn" onclick="fillPrompt('Explain Python loops')">
-Explain Python loops
-</p>
-
-<p class="topic-btn" onclick="fillPrompt('DSA roadmap for beginners')">
-DSA roadmap
-</p>
-
-<p class="topic-btn" onclick="fillPrompt('How to prepare for interviews')">
-Interview prep
-</p>
-
-<p class="topic-btn" onclick="fillPrompt('Explain JavaScript promises')">
-JS Promises
-</p>
-
+<div class="card small-card">
+<h3 id="depth">Depth: 0%</h3>
 </div>
 
+<div class="card small-card">
+<h3 id="specificity">Specificity: 0%</h3>
 </div>
 
 </div>
@@ -116,13 +130,6 @@ JS Promises
 
 <script src="js/auth.js"></script>
 <script src="js/tutor.js"></script>
-
-<script>
-function fillPrompt(text){
-document.getElementById("userInput").value = text;
-document.getElementById("userInput").focus();
-}
-</script>
 
 </body>
 </html>

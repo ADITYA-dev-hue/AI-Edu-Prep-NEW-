@@ -8,54 +8,87 @@
 </head>
 <body>
 
-<nav class="navbar">
-<div class="logo">EduPrep</div>
+<div class="menu-btn" onclick="toggleSidebar()">☰</div>
 
-<ul>
-<li><a href="home.html">HOME</a></li>
-<li><a href="tutor.html">TUTOR</a></li>
-<li><a href="studypath.html">STUDY PATH</a></li>
-<li><a href="analytics.html" class="nav-active">ANALYTICS</a></li>
-<li><a href="#" onclick="logout()" class="logout-btn">LOGOUT</a></li>
-</ul>
-</nav>
+<div id="sidebar" class="sidebar">
+
+<h2>EduPrep</h2>
+
+<a href="home.html">Home</a>
+<a href="tutor.html">Tutor</a>
+<a href="studypath.html">Study Path</a>
+<a href="analytics.html" class="active-link">Analytics</a>
+
+<hr>
+
+<p class="side-label">Gemini API Key</p>
+
+<input
+type="password"
+id="apiKeyInput"
+class="side-input"
+placeholder="Enter API Key"
+>
+
+<button onclick="saveApiKey()" class="side-save">
+Save Key
+</button>
+
+<button onclick="logout()" class="logout-side">
+Logout
+</button>
+
+</div>
 
 <section class="page-wrap">
 
 <h1>Analytics Dashboard</h1>
 
+<p class="sub-text">
+Track your study performance, prompt quality and progress insights.
+</p>
+
 <div class="stats-grid">
 
-<div class="card">
+<div class="card small-card">
 <h2 id="minutes">124</h2>
 <p>Study Minutes</p>
 </div>
 
-<div class="card">
+<div class="card small-card">
 <h2 id="accuracy">91%</h2>
 <p>Practice Accuracy</p>
 </div>
 
-<div class="card">
+<div class="card small-card">
 <h2 id="score">88</h2>
 <p>Prompt Score</p>
 </div>
 
-<div class="card">
+<div class="card small-card">
 <h2 id="topics">17</h2>
 <p>Topics Completed</p>
 </div>
 
 </div>
 
-<div class="chart-box">
+<div class="card">
+
 <h2>Daily Progress</h2>
-<p>Track your growth through tutor sessions and completed tasks.</p>
+
+<p style="line-height:1.8;color:#d0d0d0;">
+• Average study time increasing this week.<br>
+• Accuracy improved after repeated practice.<br>
+• Tutor prompt clarity remains strong.<br>
+• Continue daily streak for best results.
+</p>
+
 </div>
 
 </section>
 
 <script src="js/auth.js"></script>
+<script src="js/tutor.js"></script>
 <script src="js/analytics.js"></script>
 
 </body>

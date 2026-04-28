@@ -1,38 +1,74 @@
+let currentLang = "english";
+
+function toggleSidebar(){
+const bar = document.getElementById("sidebar");
+bar.classList.toggle("open");
+}
+
+function saveApiKey(){
+const key =
+document.getElementById("apiKeyInput").value.trim();
+
+if(!key){
+alert("Enter API Key");
+return;
+}
+
+localStorage.setItem("tutorApiKey", key);
+alert("API Key Saved");
+}
+
+function setLang(lang){
+currentLang = lang;
+
+document.getElementById("engBtn").classList.remove("active-btn");
+document.getElementById("hinBtn").classList.remove("active-btn");
+
+if(lang === "english"){
+document.getElementById("engBtn").classList.add("active-btn");
+}else{
+document.getElementById("hinBtn").classList.add("active-btn");
+}
+}
+
+function escapeHtml(text){
+return text
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;");
+}
+
+function addUserMsg(msg){
+document.getElementById("chatBox").innerHTML += `
+<div class="user-msg">${escapeHtml(msg)}</div>
+`;
+}
+
+function addBotMsg(msg){
+document.getElementById("chatBox").innerHTML += `
+<div class="bot-msg"><pre>${escapeHtml(msg)}</pre></div>
+`;
+}
+
 async function sendMessage(){
 
 const input =
 document.getElementById("userInput");
 
-const chatBox =
-document.getElementById("chatBox");
+const msg = input.value.trim();
 
-const message =
-input.value.trim();
+if(!msg) return;
 
-if(message === "") return;
-
-/* USER MESSAGE */
-
-chatBox.innerHTML += `
-<div style="text-align:right;margin-bottom:14px;">
-<span style="
-background:#ff5a00;
-padding:12px 14px;
-border-radius:12px;
-display:inline-block;
-max-width:72%;
-color:#fff;
-font-weight:600;
-">
-${message}
-</span>
-</div>
-`;
-
+addUserMsg(msg);
 input.value = "";
-chatBox.scrollTop = chatBox.scrollHeight;
 
-/* Prompt Analysis */
+const key =
+localStorage.getItem("tutorApiKey");
+
+if(!key){
+addBotMsg("Please enter API key in sidebar.");
+return;
+}
 
 document.getElementById("clarity").innerText =
 "Clarity: " + Math.floor(Math.random()*18+82) + "%";
@@ -43,53 +79,21 @@ document.getElementById("depth").innerText =
 document.getElementById("specificity").innerText =
 "Specificity: " + Math.floor(Math.random()*18+84) + "%";
 
-/* User */
+addBotMsg("Thinking...");
 
-const user = JSON.parse(
-localStorage.getItem("eduprepCurrentUser")
-);
-
-if(!user){
-chatBox.innerHTML += botMsg("Please login first.");
-return;
-}
-
-const apiKey = (user.apikey || "").trim();
-
-if(apiKey === ""){
-chatBox.innerHTML += botMsg("API Key missing. Login again.");
-return;
-}
-
-/* Restricted */
-
-const blocked = [
-"movie","song","dating","adult","joke","relationship"
-];
-
-if(blocked.some(word =>
-message.toLowerCase().includes(word)
-)){
-chatBox.innerHTML += botMsg(
-"EduPrep Tutor supports academic learning only."
-);
-return;
-}
-
-/* Loading */
-
-chatBox.innerHTML += `
-<div id="loadingBox">
-${botMsg("Thinking...")}
-</div>
-`;
-
-chatBox.scrollTop = chatBox.scrollHeight;
+const chat =
+document.getElementById("chatBox");
 
 try{
 
+const prompt =
+(currentLang === "hindi"
+? "Answer in Hindi.\n"
+: "Answer in English.\n") +
+"Only academic/coding/study answers.\nUser Question: " + msg;
+
 const response = await fetch(
-`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`,
+`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${key}`,
 {
 method:"POST",
 headers:{
@@ -99,10 +103,7 @@ body:JSON.stringify({
 contents:[
 {
 parts:[
-{
-text:
-"You are EduPrep AI Tutor. Answer only academic, coding, exams, learning and career questions.\n\nUser Question: " + message
-}
+{text:prompt}
 ]
 }
 ]
@@ -112,13 +113,9 @@ text:
 
 const data = await response.json();
 
-const loading =
-document.getElementById("loadingBox");
+chat.lastElementChild.remove();
 
-if(loading) loading.remove();
-
-let reply =
-"Unable to generate response.";
+let reply = "Unable to generate response.";
 
 if(
 data.candidates &&
@@ -132,48 +129,18 @@ data.candidates[0].content.parts[0].text;
 }
 
 if(data.error){
-reply =
-"API Error: " + data.error.message;
+reply = "API Error: " + data.error.message;
 }
 
-chatBox.innerHTML += botMsg(reply);
+addBotMsg(reply);
 
-chatBox.scrollTop =
-chatBox.scrollHeight;
+chat.scrollTop = chat.scrollHeight;
 
-}catch(error){
+}catch(err){
 
-const loading =
-document.getElementById("loadingBox");
-
-if(loading) loading.remove();
-
-chatBox.innerHTML += botMsg(
-"Connection error. Check internet or API key."
-);
+chat.lastElementChild.remove();
+addBotMsg("Connection error.");
 
 }
-
-}
-
-function botMsg(text){
-
-return `
-<div style="margin-bottom:14px;">
-<span style="
-background:#1c1c1c;
-padding:12px 14px;
-border-radius:12px;
-display:inline-block;
-max-width:75%;
-white-space:pre-wrap;
-line-height:1.6;
-color:#f0f0f0;
-border:1px solid #2a2a2a;
-">
-${text}
-</span>
-</div>
-`;
 
 }

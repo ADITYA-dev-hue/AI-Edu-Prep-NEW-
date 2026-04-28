@@ -8,25 +8,24 @@
 </head>
 <body>
 
-<div class="auth-container">
+<section class="page-wrap" style="max-width:520px;margin:auto;padding-top:90px;">
 
-<form class="auth-form" onsubmit="signup(event)">
+<div class="card">
 
-<h1>Create Account</h1>
+<h1 style="font-size:38px;text-align:center;">Create Account</h1>
 
-<p style="
-color:#a5a5a5;
-margin-bottom:22px;
-text-align:center;
-line-height:1.6;
-">
-Join EduPrep and unlock AI-powered study tools.
+<p class="sub-text" style="text-align:center;">
+Join EduPrep and start AI-powered learning.
 </p>
+
+<form onsubmit="signup(event)">
 
 <input
 type="email"
 id="email"
 placeholder="Enter Email"
+class="side-input"
+style="margin-bottom:14px;"
 required
 >
 
@@ -34,33 +33,42 @@ required
 type="password"
 id="password"
 placeholder="Create Password"
+class="side-input"
+style="margin-bottom:18px;"
 required
 >
 
-<input
-type="password"
-id="apikey"
-placeholder="Enter Gemini API Key"
-required
+<button
+type="submit"
+class="side-save"
+style="width:100%;"
 >
-
-<button type="submit">
 Create Account
 </button>
 
-<p style="margin-top:18px;text-align:center;">
-
-Already have an account?
-
-<a href="login.html" style="color:#ff5a00;">
-Login
-</a>
-
-</p>
-
 </form>
 
+<p style="margin-top:18px;text-align:center;color:#bdbdbd;">
+Already have an account?
+<a href="login.html" style="color:#ff5a00;text-decoration:none;">
+Login
+</a>
+</p>
+
 </div>
+
+<div class="card">
+
+<h2>Gemini API Key</h2>
+
+<p style="line-height:1.8;color:#d0d0d0;">
+You do not need an API key during signup.<br>
+After login, open Tutor page sidebar and save your Gemini key there.
+</p>
+
+</div>
+
+</section>
 
 <script src="js/auth.js"></script>
 
