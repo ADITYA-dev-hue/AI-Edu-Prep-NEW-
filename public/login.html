@@ -8,23 +8,68 @@
 </head>
 <body>
 
-<div class="auth-container">
+<section class="auth-wrap">
 
-<form class="auth-form" onsubmit="login(event)">
+<div class="auth-box">
 
-<h1>Login</h1>
+<div class="card">
 
-<input type="email" id="email" placeholder="Email Address" required>
-<input type="password" id="password" placeholder="Password" required>
-<input type="password" id="apikey" placeholder="Gemini API Key" required>
+<h1>Welcome Back</h1>
 
-<button type="submit">Launch Dashboard</button>
+<p class="sub-text">
+Login to continue your AI-powered learning journey.
+</p>
 
-<p>No account? <a href="signup.html">Create One</a></p>
+<form onsubmit="login(event)">
+
+<input
+type="email"
+id="email"
+class="side-input"
+placeholder="Enter Email Address"
+required
+>
+
+<input
+type="password"
+id="password"
+class="side-input"
+placeholder="Enter Password"
+required
+>
+
+<button type="submit">
+Launch Dashboard
+</button>
 
 </form>
 
+<p style="margin-top:18px;text-align:center;color:#bdbdbd;">
+
+No account?
+
+<a href="signup.html">
+Create One
+</a>
+
+</p>
+
 </div>
+
+<div class="card">
+
+<h2>Gemini API Key</h2>
+
+<p class="sub-text" style="margin-bottom:0;">
+No API key needed here.<br>
+After login, open the Tutor page sidebar and enter your Gemini API key there.
+</p>
+
+</div>
+
+</div>
+
+</section>
 
 <script src="js/auth.js"></script>
 
